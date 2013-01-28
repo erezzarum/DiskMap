@@ -167,6 +167,9 @@ class SesManager(cmd.Cmd):
             # Sometimes serial returned by prtconf and by sas2ircu are different. Mangle them
             if serial not in self._disks and serial.replace("-", "") in self._disks:
                 serial = serial.replace("-", "")
+            # sas2ircu can display only first 8 chars of disk serial while prtconf display the whole string
+            if serial not in self._disks and serial[:8] in self._disks:
+                serial = serial[:8]
             if serial in self._disks:
                 # Add device name to disks
                 self._disks[serial]["device"] = device
